@@ -47,6 +47,7 @@ export function Header({ onMenu }: { onMenu: () => void }) {
   const bell = useMenu();
   const account = useMenu();
   const [liveOpen, setLiveOpen] = useState(false);
+  const [mobileSearch, setMobileSearch] = useState(false);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -63,8 +64,8 @@ export function Header({ onMenu }: { onMenu: () => void }) {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center border-b border-black/[0.1] bg-white pl-4 pr-6">
-      <div className="flex w-[240px] shrink-0 items-center gap-3">
+    <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center border-b border-black/[0.1] bg-white pl-4 pr-6 max-sm:pl-2 max-sm:pr-3">
+      <div className="flex w-[240px] shrink-0 items-center gap-3 max-md:w-auto max-sm:gap-1">
         <IconButton label="Menu" onClick={onMenu}>
           <Menu size={24} strokeWidth={1.6} />
         </IconButton>
@@ -73,7 +74,7 @@ export function Header({ onMenu }: { onMenu: () => void }) {
         </Link>
       </div>
 
-      <div className="flex min-w-0 flex-1 justify-center px-4">
+      <div className={`min-w-0 flex-1 justify-center px-4 ${mobileSearch ? 'absolute inset-x-0 top-0 z-10 flex h-16 items-center bg-white px-3' : 'flex max-sm:invisible'}`}>
         <div ref={searchRef} className="relative w-full max-w-[740px]">
           <div
             className={`flex h-10 items-center rounded-lg border bg-white transition-shadow ${focused ? 'border-[#065fd4] shadow-[0_0_0_1px_#065fd4]' : 'border-black/[0.2]'}`}
@@ -88,8 +89,8 @@ export function Header({ onMenu }: { onMenu: () => void }) {
               placeholder="Search across your channel"
               className="h-full min-w-0 flex-1 bg-transparent text-[15px] text-[#0f0f0f] outline-none placeholder:text-[#606060]"
             />
-            {query && (
-              <IconButton label="Clear search" size={32} className="mr-1" onClick={() => setQuery('')}>
+            {(query || mobileSearch) && (
+              <IconButton label="Clear search" size={32} className="mr-1" onClick={() => (setQuery(''), setMobileSearch(false))}>
                 <X size={18} />
               </IconButton>
             )}
@@ -125,8 +126,11 @@ export function Header({ onMenu }: { onMenu: () => void }) {
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2">
-        <IconButton label="Help" ref={help.ref} onClick={help.toggle}>
+      <div className="flex shrink-0 items-center gap-2 max-sm:gap-0">
+        <IconButton label="Search" className="sm:hidden" onClick={() => setMobileSearch(true)}>
+          <Search size={22} strokeWidth={1.6} />
+        </IconButton>
+        <IconButton label="Help" ref={help.ref} onClick={help.toggle} className="max-sm:hidden">
           <CircleHelp size={24} strokeWidth={1.6} />
         </IconButton>
         <Popover anchor={help.ref} open={help.open} onClose={help.close} align="right" width={300}>
@@ -212,14 +216,14 @@ export function Header({ onMenu }: { onMenu: () => void }) {
         <button
           ref={create.ref}
           onClick={create.toggle}
-          className="ml-1 flex h-9 items-center gap-2 rounded-full border border-black/[0.1] px-3 text-sm font-medium text-[#0f0f0f] hover:bg-black/[0.05]"
+          className="ml-1 flex h-9 items-center gap-2 rounded-full border border-black/[0.1] px-3 text-sm font-medium text-[#0f0f0f] hover:bg-black/[0.05] max-sm:border-0 max-sm:px-2"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff0000" strokeWidth="1.7" aria-hidden>
             <rect x="2.5" y="5.5" width="13.5" height="13" rx="2" />
             <path d="M16 10.2l5.3-3v9.6l-5.3-3" strokeLinejoin="round" />
             <path d="M9.2 9v6M6.2 12h6" stroke="#ff0000" strokeLinecap="round" />
           </svg>
-          Create
+          <span className="max-sm:hidden">Create</span>
         </button>
         <Popover anchor={create.ref} open={create.open} onClose={create.close} align="right" width={220}>
           <MenuItem icon={<SquarePlay size={20} strokeWidth={1.6} />} onClick={() => (create.close(), setUploadOpen(true))}>

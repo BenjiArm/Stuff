@@ -70,9 +70,9 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export function PageHeader({ title, actions, className = '' }: { title: string; actions?: ReactNode; className?: string }) {
   return (
-    <div className={`flex min-h-[72px] items-center gap-4 px-8 pt-6 max-sm:px-4 ${className}`}>
+    <div className={`flex min-h-[72px] flex-wrap items-center gap-x-4 gap-y-2 px-8 pt-6 max-sm:px-4 ${className}`}>
       <h1 className="min-w-0 flex-1 text-[25px] font-medium leading-8 tracking-[-0.2px] text-[#0f0f0f]">{title}</h1>
-      {actions && <div className="flex items-center gap-2">{actions}</div>}
+      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>
   );
 }

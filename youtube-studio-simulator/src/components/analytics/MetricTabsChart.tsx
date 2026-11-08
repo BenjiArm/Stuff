@@ -32,8 +32,9 @@ export function MetricTabsChart({ metrics, scope, range, initial, height = 280, 
     () =>
       metrics.map((m) => {
         const cur = metricTotal(m, scope, range.start, range.end);
-        const prev = range.prevEnd >= 0 ? metricTotal(m, scope, range.prevStart, range.prevEnd) : 0;
-        return { m, cur, prev, pct: range.prevEnd >= 0 ? pctChange(cur, prev) : null };
+        const hasPrev = range.prevStart >= 0 && range.prevEnd >= 0;
+        const prev = hasPrev ? metricTotal(m, scope, range.prevStart, range.prevEnd) : 0;
+        return { m, cur, prev, pct: hasPrev ? pctChange(cur, prev) : null };
       }),
     [metrics, scope, range],
   );
@@ -52,6 +53,7 @@ export function MetricTabsChart({ metrics, scope, range, initial, height = 280, 
     return videos
       .filter((v) => v.visibility === 'public' && !v.uploaded && v.publishedAt >= startMs && v.publishedAt < endMs && (scope.kind === 'short' ? v.kind === 'short' : scope.kind === 'video' ? v.kind === 'video' : v.kind === 'video'))
       .slice(0, 40)
+      .filter((_, __, arr) => arr.length <= 18)
       .map((v) => ({ id: v.id, label: v.title, day: range.start + Math.floor((v.publishedAt - startMs) / 86_400_000) }));
   }, [videos, range, scope, showMarkers]);
 
@@ -101,7 +103,7 @@ export function MetricTabsChart({ metrics, scope, range, initial, height = 280, 
           onMarkerClick={(id) => navigate(`/video/${id}/analytics`)}
         />
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          {range.prevEnd >= 0 && (
+          {range.prevStart >= 0 && range.prevEnd >= 0 && (
             <label className="flex cursor-pointer items-center gap-2 text-[13px] text-[#606060]">
               <input type="checkbox" className="studio-check" checked={comparePrev} onChange={(e) => setComparePrev(e.target.checked)} />
               Compare to {range.compareLabel}

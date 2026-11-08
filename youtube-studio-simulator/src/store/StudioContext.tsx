@@ -17,8 +17,8 @@ function usePersisted<T>(key: string, initial: T | (() => T)) {
       first.current = false;
       return;
     }
-    const t = window.setTimeout(() => saveState(key, value), 120);
-    return () => window.clearTimeout(t);
+    // Written synchronously so nothing is lost if the tab is closed right after a change.
+    saveState(key, value);
   }, [key, value]);
   return [value, setValue] as const;
 }

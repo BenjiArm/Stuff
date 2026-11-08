@@ -57,7 +57,7 @@ function CommentRow({ c, showVideo, selectable, selected, onSelect }: { c: Studi
   };
 
   return (
-    <div className={`group flex gap-4 border-b border-black/[0.1] px-6 py-4 ${selected ? 'bg-[#f2f2f2]' : 'hover:bg-[#fafafa]'}`}>
+    <div className={`group flex gap-4 border-b border-black/[0.1] px-6 py-4 max-sm:gap-3 max-sm:px-4 ${selected ? 'bg-[#f2f2f2]' : 'hover:bg-[#fafafa]'}`}>
       {selectable && (
         <div className="pt-2">
           <Checkbox checked={selected} onChange={onSelect} />
@@ -78,7 +78,7 @@ function CommentRow({ c, showVideo, selectable, selected, onSelect }: { c: Studi
         <p className="mt-1 whitespace-pre-wrap text-sm leading-5 text-[#0f0f0f]">{c.text}</p>
 
         {c.status === 'published' ? (
-          <div className="mt-1 flex items-center gap-1 text-xs text-[#606060]">
+          <div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-[#606060]">
             <button onClick={() => setReplying(true)} className="mr-2 h-8 rounded-full px-3 text-[13px] font-medium text-[#0f0f0f] hover:bg-black/[0.05]">
               Reply
             </button>
@@ -218,8 +218,8 @@ export function CommentsList({ videoId }: { videoId?: string }) {
       .filter((c) => !questions || c.isQuestion || c.text.includes('?'))
       .filter((c) => !unanswered || !c.replies.some((r) => r.isCreator))
       .filter((c) => !subsOnly || c.isSubscriber)
-      .sort((a, b) => (a.pinned && !b.pinned ? -1 : b.pinned && !a.pinned ? 1 : sort === 'newest' ? b.at - a.at : b.likes - a.likes));
-  }, [scoped, tab, query, questions, unanswered, subsOnly, sort]);
+      .sort((a, b) => (videoFilter && a.pinned !== b.pinned ? (a.pinned ? -1 : 1) : sort === 'newest' ? b.at - a.at : b.likes - a.likes));
+  }, [scoped, tab, query, questions, unanswered, subsOnly, sort, videoFilter]);
 
   const totalComments = useMemo(() => allVideos.reduce((a, v) => a + videoLifetime(v).comments, 0), [allVideos]);
   const commentedVideos = useMemo(() => Array.from(new Set(comments.map((c) => c.videoId))).map((id) => allVideos.find((v) => v.id === id)).filter(Boolean), [comments, allVideos]);
@@ -232,7 +232,7 @@ export function CommentsList({ videoId }: { videoId?: string }) {
 
   return (
     <div>
-      <div className="flex gap-2 px-6 pb-2 pt-4">
+      <div className="flex flex-wrap gap-2 px-6 pb-2 pt-4 max-sm:px-4">
         {([
           ['published', 'Published'],
           ['held', 'Held for review'],
@@ -246,7 +246,7 @@ export function CommentsList({ videoId }: { videoId?: string }) {
       </div>
 
       <div className="flex flex-wrap items-center gap-2 border-b border-black/[0.1] px-6 py-3">
-        <div className="flex h-9 w-[280px] items-center rounded-full border border-black/[0.15] px-3 focus-within:border-[#065fd4]">
+        <div className="flex h-9 w-[280px] max-w-full items-center rounded-full border border-black/[0.15] px-3 focus-within:border-[#065fd4]">
           <Search size={18} className="text-[#606060]" />
           <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search comments" className="ml-2 min-w-0 flex-1 bg-transparent text-sm outline-none" />
           {query && <button aria-label="Clear" onClick={() => setQuery('')}><X size={16} /></button>}

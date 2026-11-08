@@ -108,9 +108,9 @@ export function TopContentTable({ rows, columns, sortBy, limit = 10, title, show
         <thead>
           <tr className="h-10 border-b border-black/[0.1] text-xs text-[#606060]">
             <th className="w-8 font-medium">#</th>
-            <th className="font-medium">{title ?? 'Content'}</th>
+            <th className="min-w-[240px] font-medium">{title ?? 'Content'}</th>
             {columns.map((c) => (
-              <th key={c} className="w-[120px] text-right font-medium">
+              <th key={c} className="w-[1%] whitespace-nowrap pl-5 text-right font-medium">
                 <button onClick={() => setSort((s) => ({ c, dir: s.c === c && s.dir === 'desc' ? 'asc' : 'desc' }))} className={`ml-auto flex items-center gap-1 hover:text-[#0f0f0f] ${sort.c === c ? 'text-[#0f0f0f]' : ''}`}>
                   {sort.c === c && (sort.dir === 'desc' ? <ArrowDown size={13} /> : <ArrowUp size={13} />)}
                   {COL_LABEL[c]}
@@ -130,7 +130,7 @@ export function TopContentTable({ rows, columns, sortBy, limit = 10, title, show
                 </div>
               </td>
               {columns.map((c) => (
-                <td key={c} className="tabular py-2 text-right">
+                <td key={c} className="tabular whitespace-nowrap py-2 pl-5 text-right">
                   {colFormat(c, colValue(r, c))}
                   {showBars && c === sort.c && (
                     <div className="ml-auto mt-1 h-1 w-20 rounded-full bg-black/[0.05]">
@@ -182,8 +182,9 @@ export function revenueSources(scope: Scope, a: number, b: number) {
 
 export function headline(metric: string, value: number, range: ResolvedRange, isVideo: boolean) {
   const subject = isVideo ? 'Your video' : 'Your channel';
-  const verb = isVideo && range.key === 'lifetime' ? 'has got' : 'got';
-  const phrase = isVideo && range.key === 'lifetime' ? 'since it was published' : range.phrase;
+  const since = isVideo && (range.key === 'lifetime' || range.phrase === 'since it was published');
+  const verb = since ? 'has got' : 'got';
+  const phrase = since ? 'since it was published' : range.phrase;
   return `${subject} ${verb} ${metric === 'revenue' ? formatGBP(value) : formatInt(value)} ${metric} ${phrase}`;
 }
 

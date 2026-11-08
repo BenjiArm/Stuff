@@ -12,13 +12,13 @@ import { RevenueTab } from '../analytics/RevenueTab';
 import { ImpressionsFunnel, TrafficCards } from '../analytics/ContentTab';
 import { MetricTabsChart } from '../../components/analytics/MetricTabsChart';
 import { ACard } from '../analytics/shared';
-import { VIDEO_ANALYTICS, lifetimeVideoStats, LAST } from '../../data/analytics';
+import { VIDEO_ANALYTICS, lifetimeVideoStats, LAST, dayDate } from '../../data/analytics';
 import { CommentsList } from '../../components/community/CommentsList';
 import { VideoSubtitles } from '../../components/subtitles/VideoSubtitles';
 import { VideoCopyright } from '../Copyright';
 import { Button, IconButton } from '../../components/common/Button';
 import { EmptyArt, EmptyState } from '../../components/common/Card';
-import { formatDuration, formatGBP, formatInt } from '../../lib/format';
+import { formatDateRange, formatDuration, formatGBP, formatInt } from '../../lib/format';
 import { MonetisationIcon } from '../../components/common/StudioIcons';
 import { Thumbnail } from '../../components/thumbnails/Thumbnail';
 import { variantSpec } from '../../lib/thumbVariants';
@@ -39,9 +39,15 @@ function VideoAnalytics({ video }: { video: Video }) {
   const { tab = 'overview' } = useParams();
   const navigate = useNavigate();
   const { analyticsRange, customRange } = useStudio();
-  const range = resolveRange(analyticsRange, customRange);
+  const baseRange = resolveRange(analyticsRange, customRange);
   const scope = useMemo(() => ({ videoId: video.id }), [video.id]);
   const hasData = !!VIDEO_ANALYTICS[video.id];
+  // Like Studio, a video's analytics never start before the video existed.
+  const range = useMemo(() => {
+    const pub = VIDEO_ANALYTICS[video.id]?.publishDay;
+    if (pub === undefined || baseRange.start >= pub || baseRange.end < pub) return baseRange;
+    return { ...baseRange, start: pub, startDate: dayDate(pub), length: baseRange.end - pub + 1, prevStart: -1, prevEnd: -1, phrase: baseRange.key === 'lifetime' ? baseRange.phrase : 'since it was published', dateLabel: formatDateRange(dayDate(pub), baseRange.endDate) };
+  }, [baseRange, video.id]);
   const life = lifetimeVideoStats(video.id);
   const tabs = [
     { value: 'overview', label: 'Overview' },
@@ -351,7 +357,7 @@ export function VideoRoutes() {
   return (
     <Routes>
       <Route path="edit" element={<VideoDetails video={video} />} />
-      <Route path="analytics" element={<Navigate to="overview" replace />} />
+      <Route path="analytics" element={<Navigate to={`/video/${video.id}/analytics/overview`} replace />} />
       <Route path="analytics/:tab" element={<VideoAnalytics video={video} />} />
       <Route path="editor" element={<VideoEditor video={video} />} />
       <Route path="comments" element={<div><Title>Video comments</Title><CommentsList videoId={video.id} /></div>} />
@@ -359,7 +365,7 @@ export function VideoRoutes() {
       <Route path="copyright" element={<div><Title>Video copyright</Title><VideoCopyright videoId={video.id} /></div>} />
       <Route path="monetisation" element={<VideoMonetisation video={video} />} />
       <Route path="clips" element={<div><Title>Video clips</Title><EmptyState art={<EmptyArt kind="box" />} title="No clips yet" body="Clips are short segments viewers create and share from your video. When someone clips this documentary, it'll show up here." /></div>} />
-      <Route path="*" element={<Navigate to="edit" replace />} />
+      <Route path="*" element={<Navigate to={`/video/${video.id}/edit`} replace />} />
     </Routes>
   );
 }

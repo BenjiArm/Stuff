@@ -111,7 +111,8 @@ export function ClaimsTable({ videoId }: { videoId?: string }) {
       </div>
     );
   return (
-    <table className="w-full text-left text-[13px]">
+    <div className="overflow-x-auto">
+    <table className="w-full min-w-[860px] text-left text-[13px]">
       <thead>
         <tr className="h-12 border-b border-black/[0.1] text-xs text-[#606060]">
           {!videoId && <th className="pl-6 font-medium">Video</th>}
@@ -152,6 +153,7 @@ export function ClaimsTable({ videoId }: { videoId?: string }) {
         })}
       </tbody>
     </table>
+    </div>
   );
 }
 

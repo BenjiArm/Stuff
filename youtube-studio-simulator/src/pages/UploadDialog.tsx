@@ -141,7 +141,7 @@ export function UploadDialog() {
   if (published) {
     return createPortal(
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-        <div className="w-full max-w-[520px] animate-pop-in rounded-xl bg-white p-6 shadow-dialog">
+        <div role="dialog" aria-modal="true" aria-label="Video published" className="w-full max-w-[520px] animate-pop-in rounded-xl bg-white p-6 shadow-dialog">
           <h2 className="text-xl font-medium">{published.visibility === 'public' ? 'Video published' : published.visibility === 'scheduled' ? 'Video scheduled' : 'Video saved'}</h2>
           <div className="mt-4 flex gap-4 rounded-lg bg-[#f9f9f9] p-3">
             <div className="w-40 shrink-0 overflow-hidden rounded" style={{ aspectRatio: '16/9' }}>
@@ -171,7 +171,7 @@ export function UploadDialog() {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center bg-black/50 p-4">
-      <div className="flex h-[min(760px,calc(100vh-32px))] w-full max-w-[960px] animate-pop-in flex-col overflow-hidden rounded-xl bg-white shadow-dialog">
+      <div role="dialog" aria-modal="true" aria-label="Upload videos" className="flex h-[min(760px,calc(100vh-32px))] w-full max-w-[960px] animate-pop-in flex-col overflow-hidden rounded-xl bg-white shadow-dialog">
         <div className="flex items-center border-b border-black/[0.1] py-2 pl-6 pr-3">
           <h2 className="min-w-0 flex-1 truncate py-2 text-xl font-medium">{file ? title || 'Untitled' : 'Upload videos'}</h2>
           <IconButton label="Close" onClick={close}>

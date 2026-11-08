@@ -86,10 +86,10 @@ function ChannelBannerArt({ styleIndex = 0, name = 'The Past Explained', classNa
       {Array.from({ length: 9 }).map((_, i) => (
         <rect key={i} x={1780 + i * 26} y={200 + ((i * 13) % 50)} width="14" height={80 - ((i * 13) % 50)} fill={b.ink} />
       ))}
-      <text x="1024" y="168" textAnchor="middle" fontFamily="Cinzel, Georgia, serif" fontWeight="700" fontSize="92" letterSpacing="10" fill="#f6e7c1" stroke="#000" strokeWidth="2" paintOrder="stroke">
+      <text x="1024" y="170" textAnchor="middle" fontFamily="Cinzel, Georgia, serif" fontWeight="700" fontSize="56" letterSpacing="4" fill="#f6e7c1" stroke="#000" strokeWidth="2" paintOrder="stroke">
         {name.toUpperCase()}
       </text>
-      <text x="1024" y="222" textAnchor="middle" fontFamily="Roboto, Arial, sans-serif" fontSize="30" letterSpacing="6" fill="#f6e7c1" opacity="0.85">
+      <text x="1024" y="212" textAnchor="middle" fontFamily="Roboto, Arial, sans-serif" fontSize="22" letterSpacing="4" fill="#f6e7c1" opacity="0.85">
         NEW HISTORY DOCUMENTARY EVERY WEEK
       </text>
     </svg>

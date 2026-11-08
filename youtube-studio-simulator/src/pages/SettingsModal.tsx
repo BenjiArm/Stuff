@@ -52,7 +52,7 @@ export function SettingsModal() {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center bg-black/50 p-4" onMouseDown={(e) => e.target === e.currentTarget && closeSettings()}>
-      <div className="flex h-[min(680px,calc(100vh-32px))] w-full max-w-[1000px] animate-pop-in flex-col overflow-hidden rounded-xl bg-white shadow-dialog">
+      <div role="dialog" aria-modal="true" aria-label="Settings" className="flex h-[min(680px,calc(100vh-32px))] w-full max-w-[1000px] animate-pop-in flex-col overflow-hidden rounded-xl bg-white shadow-dialog">
         <div className="flex items-center border-b border-black/[0.1] py-2 pl-6 pr-3">
           <h2 className="flex-1 py-2 text-xl font-medium">Settings</h2>
           <IconButton label="Close" onClick={closeSettings}>
@@ -75,7 +75,8 @@ export function SettingsModal() {
                   {draft.currency !== 'GBP – British Pound' && <p className="mt-2 text-xs text-[#606060]">Revenue in this simulator is always calculated in GBP.</p>}
                 </Row>
                 <Row title="Appearance">
-                  <SelectField className="max-w-[360px]" label="Theme" value={draft.appearance} onChange={(v) => set('appearance', v)} options={[{ value: 'light', label: 'Light theme' }, { value: 'device', label: 'Use device theme' }]} />
+                  <SelectField className="max-w-[360px]" label="Theme" value="light" onChange={() => undefined} options={[{ value: 'light', label: 'Light theme' }]} />
+                  <p className="mt-2 text-xs text-[#606060]">The simulator recreates Studio's light theme.</p>
                 </Row>
                 <Row title="Language and location">
                   <div className="flex max-w-[740px] gap-4 max-md:flex-col">

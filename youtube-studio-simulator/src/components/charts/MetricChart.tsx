@@ -38,7 +38,8 @@ export function MetricChart({ data, format, axisFormat, height = 260, color = '#
   const span = data.length;
   const ticks = useMemo(() => {
     if (!data.length) return [];
-    const n = span <= 8 ? span : 5;
+    const narrow = typeof window !== 'undefined' && window.innerWidth < 640;
+    const n = span <= (narrow ? 3 : 8) ? span : narrow ? 3 : 5;
     const out: number[] = [];
     for (let i = 0; i < n; i++) out.push(data[Math.round((i * (data.length - 1)) / Math.max(1, n - 1))].day);
     return Array.from(new Set(out));

@@ -1,6 +1,6 @@
 import { LONG_FORM_SEEDS, SHORT_SEEDS, UNPUBLISHED } from './catalogue';
 import { DAY_MS } from '../lib/dates';
-import { SEEDED_TIMING, SESSION_START, TODAY } from './analytics';
+import { LAUNCH, SEEDED_TIMING, SESSION_START, TODAY } from './analytics';
 import { avatarColourFor } from './comments';
 import type { CommunityPost, Playlist, StudioNotification, Subscriber, Video, VideoSeed } from './types';
 
@@ -184,7 +184,7 @@ export const SEED_POSTS: CommunityPost[] = [
     id: 'post1', kind: 'poll', text: 'Which empire should we cover after Byzantium? 🏛️', at: SESSION_START - 3 * DAY_MS, likes: 2140, comments: 486, visibility: 'public',
     options: [ { label: 'The Ottoman Empire', votes: 6120 }, { label: 'The Khmer Empire', votes: 2210 }, { label: 'The Mali Empire', votes: 3080 }, { label: 'The Carolingian Empire', votes: 1590 } ],
   },
-  { id: 'post2', kind: 'image', text: '80,000 of you! 🎉 When we uploaded our first video in January, we had no idea this channel would grow like this. Thank you for watching, commenting and sharing. Next stop: 100K.', at: SESSION_START - 9 * DAY_MS, likes: 4810, comments: 612, visibility: 'public', imageScene: { scene: 'temple', palette: 'gold', text: '80,000|Thank You', align: 'center', font: 'cinzel', textColor: 'gold' } },
+  { id: 'post2', kind: 'image', text: `80,000 of you! 🎉 When we uploaded our first video in ${LAUNCH.toLocaleDateString('en-GB', { month: 'long' })}, we had no idea this channel would grow like this. Thank you for watching, commenting and sharing. Next stop: 100K.`, at: SESSION_START - 9 * DAY_MS, likes: 4810, comments: 612, visibility: 'public', imageScene: { scene: 'temple', palette: 'gold', text: '80,000|Thank You', align: 'center', font: 'cinzel', textColor: 'gold' } },
   { id: 'post3', kind: 'text', text: 'Big one coming next week: the full story of the Byzantine Empire, Rome\'s final thousand years. It\'s our longest documentary yet. 👀', at: SESSION_START - 4 * DAY_MS, likes: 3360, comments: 401, visibility: 'public' },
   { id: 'post4', kind: 'quiz', text: 'History quiz: which of these cities was NOT a capital of the Persian Empire?', at: SESSION_START - 17 * DAY_MS, likes: 1290, comments: 233, visibility: 'public', options: [ { label: 'Persepolis', votes: 1210 }, { label: 'Susa', votes: 980 }, { label: 'Carthage', votes: 5840 }, { label: 'Pasargadae', votes: 760 } ] },
 ];

@@ -73,3 +73,9 @@ input[type='range'].studio-range {
 .recharts-wrapper *:focus {
   outline: none;
 }
+
+/* Clamped text inside stretched flex rows must not reveal a partial extra line. */
+.line-clamp-1 { max-height: 1lh; }
+.line-clamp-2 { max-height: 2lh; }
+.line-clamp-3 { max-height: 3lh; }
+.line-clamp-4 { max-height: 4lh; }

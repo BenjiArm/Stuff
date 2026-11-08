@@ -24,7 +24,7 @@ export function FeedbackDrawer() {
   };
   return createPortal(
     <div className="fixed inset-0 z-50 flex justify-end bg-black/30 animate-fade-in" onMouseDown={(e) => e.target === e.currentTarget && close()}>
-      <aside className="flex h-full w-full max-w-[420px] animate-slide-left flex-col bg-white shadow-dialog">
+      <aside role="dialog" aria-modal="true" aria-label="Send feedback" className="flex h-full w-full max-w-[420px] animate-slide-left flex-col bg-white shadow-dialog">
         <div className="flex h-16 items-center border-b border-black/[0.1] pl-6 pr-3">
           <h2 className="flex-1 text-lg font-medium">Send feedback to YouTube</h2>
           <IconButton label="Close" onClick={close}>

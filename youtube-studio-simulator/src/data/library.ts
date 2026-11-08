@@ -129,7 +129,8 @@ export function seedSubtitles(videoId: string, index: number, publishedAt: numbe
   if (index % 5 === 0) tracks.push({ language: 'German', kind: 'published', modifiedAt: publishedAt + 8 * DAY_MS, titleAndDescription: index % 10 === 0 });
   if (index % 7 === 0) tracks.push({ language: 'Portuguese (Brazil)', kind: 'draft', modifiedAt: publishedAt + 9 * DAY_MS });
   void videoId;
-  return tracks;
+  // never show a modification date in the future
+  return tracks.map((t) => ({ ...t, modifiedAt: Math.min(t.modifiedAt, SESSION_START - (index % 5) * 3_600_000) }));
 }
 
 export const SUBTITLE_LANGUAGE_OPTIONS = [

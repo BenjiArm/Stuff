@@ -124,11 +124,11 @@ export function CustomisationPage() {
           <>
             <Block title="Banner image" desc="This image will appear across the top of your channel. For the best results on all devices, use an image that's at least 2048 x 1152 pixels.">
               <div className="flex items-start gap-6 max-md:flex-col">
-                <div className="h-[106px] w-[290px] overflow-hidden rounded-lg bg-[#f2f2f2]">
+                <div className="h-[106px] w-[290px] max-w-full overflow-hidden rounded-lg bg-[#f2f2f2]">
                   <ChannelBanner styleIndex={draft.bannerStyle} name={draft.name || 'Your channel'} />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {Array.from({ length: BANNER_COUNT }).map((_, i) => (
                       <button key={i} onClick={() => set('bannerStyle', i)} className={`h-10 w-24 overflow-hidden rounded border-2 ${draft.bannerStyle === i ? 'border-[#065fd4]' : 'border-transparent'}`} aria-label={`Banner style ${i + 1}`}>
                         <ChannelBanner styleIndex={i} name={draft.name} />
@@ -142,9 +142,9 @@ export function CustomisationPage() {
               </div>
             </Block>
             <Block title="Picture" desc="Your profile picture will appear where your channel is presented on YouTube, like next to your videos and comments.">
-              <div className="flex items-center gap-6">
+              <div className="flex flex-wrap items-center gap-6">
                 <ChannelAvatar size={112} styleIndex={draft.avatarStyle} />
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {Array.from({ length: AVATAR_STYLE_COUNT }).map((_, i) => (
                     <button key={i} onClick={() => set('avatarStyle', i)} className={`rounded-full border-2 p-0.5 ${draft.avatarStyle === i ? 'border-[#065fd4]' : 'border-transparent'}`} aria-label={`Avatar style ${i + 1}`}>
                       <ChannelAvatar size={48} styleIndex={i} />

@@ -70,6 +70,12 @@ export function AudienceTab({ scope, range }: { scope: Scope; range: ResolvedRan
     for (let d = Math.max(0, range.start); d <= range.end; d++) out.push({ day: d, value: Math.round(SUBSCRIBERS_CUMULATIVE[d]) });
     return out;
   }, [range]);
+  const subsTicks = useMemo(() => {
+    if (subsData.length < 2) return subsData.map((d) => d.day);
+    const a = subsData[0].day;
+    const b = subsData[subsData.length - 1].day;
+    return [0.1, 0.5, 0.9].map((f) => Math.round(a + (b - a) * f));
+  }, [subsData]);
   const age = perturb(AGE_GROUPS, seed);
   const gender = perturb(GENDER, seed >> 3);
 
@@ -93,7 +99,7 @@ export function AudienceTab({ scope, range }: { scope: Scope; range: ResolvedRan
                       </linearGradient>
                     </defs>
                     <CartesianGrid vertical={false} stroke="#e5e5e5" />
-                    <XAxis dataKey="day" type="number" domain={['dataMin', 'dataMax']} tickFormatter={(d) => formatDate(dayDate(d))} tick={{ fontSize: 12, fill: '#606060' }} tickLine={false} axisLine={{ stroke: '#909090' }} tickCount={5} />
+                    <XAxis dataKey="day" type="number" domain={[subsData[0]?.day ?? 0, subsData[subsData.length - 1]?.day ?? 1]} ticks={subsTicks} interval={0} tickFormatter={(d) => formatDate(dayDate(d))} tick={{ fontSize: 12, fill: '#606060' }} tickLine={false} axisLine={{ stroke: '#909090' }} />
                     <YAxis orientation="right" tickFormatter={(v) => formatCompact(v)} tick={{ fontSize: 12, fill: '#606060' }} tickLine={false} axisLine={false} width={52} domain={['dataMin', 'dataMax']} />
                     <Tooltip content={({ active, payload }) => (active && payload?.length ? <div className="rounded-lg bg-white px-3 py-2 text-sm shadow-menu"><div className="text-xs text-[#606060]">{formatDate(dayDate(payload[0].payload.day))}</div><div className="font-medium">{formatInt(payload[0].payload.value)} subscribers</div></div> : null)} />
                     <Area type="monotone" dataKey="value" stroke="#cc0000" strokeWidth={2.5} fill="url(#subgrow)" />
